@@ -1,26 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Card, CardBody, CardTitle, CardSubtitle, CardText, CardLink, CardHeader } from 'reactstrap';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super();
+    this.state = {
+
+    }
+  }
+
+  componentDidMount() {
+    fetch('https://api.github.com/users/5f1839842f2fb')
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson)
+        this.setState(responseJson)
+      })
+  }
+
+  render() {
+    return (
+      <div className="App" style={{'maxWidth': '15rem'}}>
+        <Card>
+          <CardHeader>{this.state.login}</CardHeader>
+          <CardLink href={this.state.html_url}>
+            <img width="100%" src={this.state.avatar_url} alt=""  />
+          </CardLink>
+          <CardBody>
+            <CardSubtitle>{this.state.name}</CardSubtitle>
+            <CardText>{this.state.bio}</CardText>
+            <CardLink href={"https://github.com/5f1839842f2fb?tab=following"}>Following: {this.state.following}</CardLink>
+            <CardLink href={"https://github.com/5f1839842f2fb?tab=followers"}>Followers: {this.state.followers}</CardLink>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
 }
 
 export default App;
